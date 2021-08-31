@@ -21,7 +21,7 @@ contract CryptoFrenchies is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
     string private baseURI;
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
-    uint256 MAX_NFTS = 3;
+    uint256 MAX_NFTS = 1010;
     string public notrevealed_nft = "00000000000000000000000000000000000";
     constructor (
         address _openseaProxyAddress,
