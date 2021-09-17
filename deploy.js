@@ -22,7 +22,7 @@ async function deploy() {
 
             console.log('Removing existing build..')
             child_process.execSync('sudo rm -rf build')
-            
+
             console.log('Deploying contract..')
 
             child_process.execSync('sudo PROVIDER="' + configs.provider + '" MNEMONIC="' + configs.owner_mnemonic + '" DESCRIPTION="' + configs.contract.description + '" TICKER="' + configs.contract.ticker + '" NAME="' + configs.contract.name + '" OWNER="' + configs.owner_address + '" REAL_OWNER="' + configs.real_owner + '" BASEURI="' + configs.baseURI + '" GAS_PRICE=' + gas_price + ' truffle deploy --network ' + configs.network + ' --reset', { stdio: 'inherit' })
@@ -30,10 +30,11 @@ async function deploy() {
             console.log('Extrating ABI..')
             child_process.execSync('sudo npm run extract-abi')
             console.log('--')
-
-            console.log('Verifying smart contract..')
-            child_process.execSync('truffle run verify BreadHeads --network ' + configs.network)
-            console.log('--')
+            if (configs.network !== 'ganache') {
+                console.log('Verifying smart contract..')
+                child_process.execSync('truffle run verify BreadHeads --network ' + configs.network)
+                console.log('--')
+            }
             console.log('All done, exiting!')
             process.exit();
         } else {

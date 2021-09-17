@@ -82,12 +82,17 @@ contract BreadHeads is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
     /*
         This method will first mint the token to the address.
     */
-    function mintNFT() public payable returns (uint256) {
-        require(_tokenIdCounter.current() < MAX_NFTS, "BreadHeads: Hard cap reached.");
-        require(msg.value == minting_price, 'BreadHeads: Amount should be exactly 0.04 ETH');
-        uint256 tokenId = mintTo(msg.sender, notrevealed_nft);
-        _tokenIdsMapping[tokenId] = notrevealed_nft;
-        return tokenId;
+    function mintNFT() public payable {
+        require(msg.value % minting_price == 0, 'BreadHeads: Amount should be a multiple of minting cost');
+        uint256 amount = msg.value / minting_price;
+        require(amount >= 1, 'BreadHeads: Amount should be at least 1');
+        uint256 reached = amount + _tokenIdCounter.current();
+        require(reached <= MAX_NFTS, "BreadHeads: Hard cap reached.");
+        uint j = 0;
+        for (j = 0; j < amount; j++) {
+            uint256 tokenId = mintTo(msg.sender, notrevealed_nft);
+            _tokenIdsMapping[tokenId] = notrevealed_nft;
+        }
     }
 
     /*

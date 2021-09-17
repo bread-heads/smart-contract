@@ -35,7 +35,7 @@ async function main() {
             console.log('Trying withdraw ETH...')
             const result = await nftContract.methods
                 .withdrawEther()
-                .send({ from: configs.owner_address });
+                .send({ from: configs.real_owner });
             console.log("Balance withdrawn! Transaction: " + result.transactionHash);
             console.log(result)
         } catch (e) {

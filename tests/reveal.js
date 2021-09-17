@@ -32,7 +32,7 @@ async function main() {
             console.log('Trying revealing NFT...')
             const result = await nftContract.methods
                 .revealNFT('0x00000000000000000000000000000' + new Date().getTime(), 3)
-                .send({ from: configs.owner_address });
+                .send({ from: configs.real_owner });
             console.log("NFT minted! Transaction: " + result.transactionHash);
             console.log(result)
             process.exit();
