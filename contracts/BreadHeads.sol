@@ -125,6 +125,32 @@ contract BreadHeads is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
     }
 
     /*
+        This method will allow owner to fix the contract details
+     */
+
+    function fixContractDescription(string memory newDescription) public onlyOwner {
+        contract_ipfs_json = newDescription;
+    }
+
+    /*
+        This method will allow owner to get the balance of the smart contract
+     */
+
+    function getBalance() public view returns (uint256) {
+        return address(this).balance;
+    }
+
+    /*
+        This method will allow owner tow withdraw all ethers
+     */
+
+    function withdrawEther() public onlyOwner {
+        uint256 balance = address(this).balance;
+        require(balance > 0, 'BreadHeads: Nothing to withdraw!');
+        payable(msg.sender).transfer(balance);
+    }
+
+    /*
         This method is used by OpenSea to automate the sell.
     */
     function isApprovedForAll(
