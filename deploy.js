@@ -18,44 +18,14 @@ async function deploy() {
             configs.baseURI !== undefined
         ) {
 
-            // Read current gas price from gas station:
-            let gas_station
-            let gas_price = "1"
-            if (configs.network === 'mumbai') {
-                gas_station = 'https://gasstation-mumbai.matic.today'
-            } else if (configs.network === 'polygon') {
-                gas_station = 'https://gasstation-mainnet.matic.network'
-            }
-
-            if (gas_station !== undefined) {
-                const gasStation = await axios.get(gas_station)
-                if (gasStation.data['fast'] !== undefined) {
-                    gasPrice = (gasStation.data['fast'] * 1000000000).toFixed(0).toString()
-                    console.log('CURRENT GAS PRICE IS', gasPrice)
-                }
-            }
+            let gas_price = "100000000000"
 
             console.log('Removing existing build..')
             child_process.execSync('sudo rm -rf build')
-            let output
-            if (argv.debug !== undefined) {
-                output = { stdio: 'inherit' }
-            }
+            
             console.log('Deploying contract..')
-            let out = child_process.execSync('sudo PROVIDER="' + configs.provider + '" MNEMONIC="' + configs.owner_mnemonic + '" DESCRIPTION="' + configs.contract.description + '" TICKER="' + configs.contract.ticker + '" NAME="' + configs.contract.name + '" OWNER="' + configs.owner_address + '" BASEURI="' + configs.baseURI + '" GAS_PRICE=' + gas_price + ' truffle deploy --network ' + configs.network + ' --reset', output)
 
-            // Extracting address
-            if (out !== undefined && out !== null) {
-                out = out.toString()
-                let head = out.split('CONTRACT ADDRESS IS*||*')
-                let foot = head[1].split('*||*')
-                const address = foot[0]
-                console.log('Deployed address is: ' + address)
-                configs.contract_address = address
-                fs.writeFileSync('./configs/' + argv._ + '.json', JSON.stringify(configs, null, 4))
-                console.log('Remember to save the address in config file..')
-                console.log('--')
-            }
+            child_process.execSync('sudo PROVIDER="' + configs.provider + '" MNEMONIC="' + configs.owner_mnemonic + '" DESCRIPTION="' + configs.contract.description + '" TICKER="' + configs.contract.ticker + '" NAME="' + configs.contract.name + '" OWNER="' + configs.owner_address + '" REAL_OWNER="' + configs.real_owner + '" BASEURI="' + configs.baseURI + '" GAS_PRICE=' + gas_price + ' truffle deploy --network ' + configs.network + ' --reset', { stdio: 'inherit' })
 
             console.log('Extrating ABI..')
             child_process.execSync('sudo npm run extract-abi')

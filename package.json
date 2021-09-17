@@ -32,6 +32,7 @@
     "devDependencies": {
         "eslint": "^6.8.0",
         "solc": "^0.5.17",
-        "truffle-export-abi": "^1.0.1"
+        "truffle-export-abi": "^1.0.1",
+        "truffle-plugin-verify": "^0.5.15"
     }
 }

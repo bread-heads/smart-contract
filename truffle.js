@@ -3,6 +3,12 @@ require('dotenv').config()
 
 module.exports = {
   contracts_directory: "./contracts/",
+  plugins: [
+    'truffle-plugin-verify'
+  ],
+  api_keys: {
+    etherscan: process.env.ETHERSCAN_KEY
+  },
   networks: {
     ganache: {
       host: "localhost",
@@ -11,17 +17,17 @@ module.exports = {
       gasPrice: process.env.GAS_PRICE,
       network_id: "*", // Match any network id
     },
-    mumbai: {
+    rinkeby: {
       provider: () => new HDWalletProvider(process.env.MNEMONIC, process.env.PROVIDER),
-      network_id: 80001,
+      network_id: 4,
       confirmations: 2,
       gasPrice: process.env.GAS_PRICE,
       timeoutBlocks: 200,
       skipDryRun: true
     },
-    polygon: {
+    ethereum: {
       provider: () => new HDWalletProvider(process.env.MNEMONIC, process.env.PROVIDER),
-      network_id: 137,
+      network_id: 1,
       confirmations: 2,
       timeoutBlocks: 200,
       gasPrice: process.env.GAS_PRICE,

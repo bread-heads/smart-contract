@@ -8,10 +8,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
- * @title CryptoFrenchies
- * CryptoFrenchies - Base smart contract for ERC721 on Polygon
+ * @title BreadHeads
+ * BreadHeads - Base smart contract for ERC721 on Ethereum
  */
-contract CryptoFrenchies is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
+contract BreadHeads is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
 
     mapping (string => address) private _creatorsMapping;
     mapping (uint256 => string) private _tokenIdsMapping;
@@ -21,8 +21,10 @@ contract CryptoFrenchies is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
     string private baseURI;
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
-    uint256 MAX_NFTS = 1010;
-    string public notrevealed_nft = "00000000000000000000000000000000000";
+    uint256 MAX_NFTS = 500;
+    string public notrevealed_nft = "bafkreihnxrqotq4gsr4rml4lpjqhcnqor6io4xrhu37w2ifebwaohpyq74";
+    uint256 minting_price = 40000000000000000;
+
     constructor (
         address _openseaProxyAddress,
         string memory _name,
@@ -41,6 +43,10 @@ contract CryptoFrenchies is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
 
     function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
         super._burn(tokenId);
+    }
+
+    function burnToken(uint256 tokenId) public {
+        _burn(tokenId);
     }
 
     function tokenURI(uint256 tokenId)
@@ -80,8 +86,9 @@ contract CryptoFrenchies is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
     /*
         This method will first mint the token to the address.
     */
-    function mintNFT() public onlyOwner returns (uint256) {
-        require(_tokenIdCounter.current() < MAX_NFTS, "CryptoFrenchies: Hard cap reached.");
+    function mintNFT() public payable returns (uint256) {
+        require(_tokenIdCounter.current() < MAX_NFTS, "BreadHeads: Hard cap reached.");
+        require(msg.value == minting_price, 'BreadHeads: Amount should be exactly 0.04 ETH');
         uint256 tokenId = mintTo(msg.sender, notrevealed_nft);
         _tokenIdsMapping[tokenId] = notrevealed_nft;
         return tokenId;
@@ -104,11 +111,11 @@ contract CryptoFrenchies is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
     function revealNFT(string memory _tokenURI, uint256 tokenId) public onlyOwner returns (bool) {
         require(
             keccak256(abi.encode(_tokenIdsMapping[tokenId])) == keccak256(abi.encode(notrevealed_nft)),
-            "CryptoFrenchies: this nft was revealed yet."
+            "BreadHeads: this nft was revealed yet."
         );
         require(
             !nftExists(_tokenURI),
-            "CryptoFrenchies: Trying to mint existent nft"
+            "BreadHeads: Trying to mint existent nft"
         );
         _setTokenURI(tokenId, _tokenURI);
         _creatorsMapping[_tokenURI] = msg.sender;
@@ -127,7 +134,6 @@ contract CryptoFrenchies is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
         if (_operator == address(openseaProxyAddress)) {
             return true;
         }
-        
         return super.isApprovedForAll(_owner, _operator);
     }
 }
