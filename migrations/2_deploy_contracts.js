@@ -10,7 +10,7 @@ module.exports = async (deployer, network) => {
     } else {
         proxyRegistryAddress = "0x0000000000000000000000000000000000000000";
     }
-    
+
     console.log('Network is:', network)
 
     const contractName = process.env.NAME;
@@ -22,5 +22,7 @@ module.exports = async (deployer, network) => {
 
     await deployer.deploy(BreadHeads, proxyRegistryAddress, contractName, contractTicker, contractDescription, baseURI, { gas: 5000000, gasPrice: gasPrice });
     const contract = await BreadHeads.deployed();
-    // await contract.transferOwnership(realOwnerAddress)
+
+    console.log('Transferring ownership to:', realOwnerAddress)
+    await contract.transferOwnership(realOwnerAddress)
 };

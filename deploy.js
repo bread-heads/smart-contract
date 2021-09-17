@@ -31,6 +31,9 @@ async function deploy() {
             child_process.execSync('sudo npm run extract-abi')
             console.log('--')
 
+            console.log('Verifying smart contract..')
+            child_process.execSync('truffle run verify BreadHeads --network ' + configs.network)
+            console.log('--')
             console.log('All done, exiting!')
             process.exit();
         } else {
