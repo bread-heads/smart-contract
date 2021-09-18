@@ -24,6 +24,7 @@ contract BreadHeads is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
     uint256 MAX_NFTS = 500;
     string public notrevealed_nft = "bafkreihnxrqotq4gsr4rml4lpjqhcnqor6io4xrhu37w2ifebwaohpyq74";
     uint256 minting_price = 40000000000000000;
+    bool collection_locked = false;
 
     constructor (
         address _openseaProxyAddress,
@@ -86,6 +87,7 @@ contract BreadHeads is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
         require(msg.value % minting_price == 0, 'BreadHeads: Amount should be a multiple of minting cost');
         uint256 amount = msg.value / minting_price;
         require(amount >= 1, 'BreadHeads: Amount should be at least 1');
+        require(amount <= 10, 'BreadHeads: Amount must be less or equal to 10');
         uint256 reached = amount + _tokenIdCounter.current();
         require(reached <= MAX_NFTS, "BreadHeads: Hard cap reached.");
         uint j = 0;
@@ -110,14 +112,8 @@ contract BreadHeads is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
         This method will reveal the NFT
     */
     function revealNFT(string memory _tokenURI, uint256 tokenId) public onlyOwner returns (bool) {
-        require(
-            keccak256(abi.encode(_tokenIdsMapping[tokenId])) == keccak256(abi.encode(notrevealed_nft)),
-            "BreadHeads: this nft was revealed yet."
-        );
-        require(
-            !nftExists(_tokenURI),
-            "BreadHeads: Trying to mint existent nft"
-        );
+        require(!collection_locked, "BreadHeads: Collection is locked.");
+        require(!nftExists(_tokenURI), "BreadHeads: Trying to mint existent nft");
         _setTokenURI(tokenId, _tokenURI);
         _creatorsMapping[_tokenURI] = msg.sender;
         _tokenIdsMapping[tokenId] = _tokenURI;
@@ -131,6 +127,14 @@ contract BreadHeads is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
 
     function fixContractDescription(string memory newDescription) public onlyOwner {
         contract_ipfs_json = newDescription;
+    }
+
+    /*
+        This method will allow owner to lock the collection
+     */
+
+    function lockCollection() public onlyOwner {
+        collection_locked = true;
     }
 
     /*

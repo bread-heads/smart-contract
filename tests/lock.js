@@ -20,20 +20,18 @@ async function main() {
             NFT_CONTRACT_ABI,
             configs.contract_address, { gasLimit: "5000000" }
         );
-        
+
         const name = await nftContract.methods.name().call();
         const symbol = await nftContract.methods.symbol().call();
-        const owner = await nftContract.methods.owner().call();
         const supply = await nftContract.methods.totalSupply().call();
         console.log('|* NFT DETAILS *|')
         console.log('>', name, symbol, '<')
         console.log('Total supply is:', supply)
         let random = Math.floor(Math.random() * (supply - 1 + 1) + 1);
-
         try {
             console.log('Trying revealing NFT...')
             const result = await nftContract.methods
-                .revealNFT('0x00000000000000000000000000000' + new Date().getTime(), random)
+                .lockCollection()
                 .send({ from: configs.real_owner });
             console.log("NFT minted! Transaction: " + result.transactionHash);
             console.log(result)

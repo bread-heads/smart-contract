@@ -572,6 +572,13 @@
   },
   {
     "inputs": [],
+    "name": "lockCollection",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getBalance",
     "outputs": [
       {
