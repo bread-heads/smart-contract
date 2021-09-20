@@ -30,6 +30,7 @@ module.exports = {
       network_id: 1,
       confirmations: 2,
       timeoutBlocks: 200,
+      gas: 3000000,
       gasPrice: process.env.GAS_PRICE,
       skipDryRun: true
     }

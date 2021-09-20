@@ -21,11 +21,11 @@ async function deploy() {
             let gas_price = "100000000000"
 
             console.log('Removing existing build..')
-            child_process.execSync('sudo rm -rf build')
+            // child_process.execSync('sudo rm -rf build')
 
             console.log('Deploying contract..')
 
-            child_process.execSync('sudo PROVIDER="' + configs.provider + '" MNEMONIC="' + configs.owner_mnemonic + '" DESCRIPTION="' + configs.contract.description + '" TICKER="' + configs.contract.ticker + '" NAME="' + configs.contract.name + '" OWNER="' + configs.owner_address + '" REAL_OWNER="' + configs.real_owner + '" BASEURI="' + configs.baseURI + '" GAS_PRICE=' + gas_price + ' truffle deploy --network ' + configs.network + ' --reset', { stdio: 'inherit' })
+            child_process.execSync('sudo PROVIDER="' + configs.provider + '" MNEMONIC="' + configs.owner_mnemonic + '" DESCRIPTION="' + configs.contract.description + '" TICKER="' + configs.contract.ticker + '" NAME="' + configs.contract.name + '" OWNER="' + configs.owner_address + '" REAL_OWNER="' + configs.real_owner + '" BASEURI="' + configs.baseURI + '" GAS_PRICE=' + gas_price + ' truffle migrate --network ' + configs.network + ' ', { stdio: 'inherit' })
 
             console.log('Extrating ABI..')
             child_process.execSync('sudo npm run extract-abi')

