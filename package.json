@@ -13,7 +13,9 @@
         "test:transfer": "node tests/transfer.js",
         "test:lock": "node tests/lock.js",
         "deploy": "node deploy.js",
-        "deploy:debug": "node deploy.js --debug=true"
+        "verify": "node verify.js",
+        "deploy:debug": "node deploy.js --debug=true",
+        "merge-contracts": "sol-merger \"./contracts/*.sol\" ./merge"
     },
     "author": "turinglabsorg",
     "license": "MIT",
@@ -34,6 +36,7 @@
     },
     "devDependencies": {
         "eslint": "^6.8.0",
+        "sol-merger": "^3.1.0",
         "solc": "^0.5.17",
         "truffle-export-abi": "^1.0.1",
         "truffle-plugin-verify": "^0.5.15"
