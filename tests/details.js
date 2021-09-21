@@ -22,6 +22,8 @@ async function main() {
         console.log('OWNER IS:', owner)
         const name = await nftContract.methods.name().call();
         const symbol = await nftContract.methods.symbol().call();
+        const balance = await nftContract.methods.getBalance().call();
+        console.log('BALANCE IS:', balance)
         console.log('|* NFT DETAILS *|')
         console.log('>', name, symbol, '<');
         console.log('--')
