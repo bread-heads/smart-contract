@@ -1,7 +1,7 @@
-// SPDX-License-Identifier: MIT
 pragma solidity 0.8.6;
 
 
+// SPDX-License-Identifier: MIT
 /**
  * @dev Interface of the ERC165 standard, as defined in the
  * https://eips.ethereum.org/EIPS/eip-165[EIP].
@@ -19,11 +19,11 @@ interface IERC165 {
      * to learn more about how these ids are created.
      *
      * This function call must use less than 30 000 gas.
-// SPDX-License-Identifier: MIT
      */
     function supportsInterface(bytes4 interfaceId) external view returns (bool);
 }
 
+// SPDX-License-Identifier: MIT
 /**
  * @dev Required interface of an ERC721 compliant contract.
  */
@@ -157,11 +157,11 @@ interface IERC721 is IERC165 {
         address from,
         address to,
         uint256 tokenId,
-// SPDX-License-Identifier: MIT
         bytes calldata data
     ) external;
 }
 
+// SPDX-License-Identifier: MIT
 /**
  * @title ERC721 token receiver interface
  * @dev Interface for any contract that wants to support safeTransfers
@@ -181,11 +181,11 @@ interface IERC721Receiver {
         address operator,
         address from,
         uint256 tokenId,
-// SPDX-License-Identifier: MIT
         bytes calldata data
     ) external returns (bytes4);
 }
 
+// SPDX-License-Identifier: MIT
 /**
  * @title ERC-721 Non-Fungible Token Standard, optional metadata extension
  * @dev See https://eips.ethereum.org/EIPS/eip-721
@@ -203,11 +203,11 @@ interface IERC721Metadata is IERC721 {
 
     /**
      * @dev Returns the Uniform Resource Identifier (URI) for `tokenId` token.
-// SPDX-License-Identifier: MIT
      */
     function tokenURI(uint256 tokenId) external view returns (string memory);
 }
 
+// SPDX-License-Identifier: MIT
 /**
  * @dev Collection of functions related to the address type
  */
@@ -411,11 +411,11 @@ library Address {
             } else {
                 revert(errorMessage);
             }
-// SPDX-License-Identifier: MIT
         }
     }
 }
 
+// SPDX-License-Identifier: MIT
 /*
  * @dev Provides information about the current execution context, including the
  * sender of the transaction and its data. While these are generally available
@@ -432,11 +432,11 @@ abstract contract Context {
     }
 
     function _msgData() internal view virtual returns (bytes calldata) {
-// SPDX-License-Identifier: MIT
         return msg.data;
     }
 }
 
+// SPDX-License-Identifier: MIT
 /**
  * @dev String operations.
  */
@@ -496,11 +496,11 @@ library Strings {
             value >>= 4;
         }
         require(value == 0, "Strings: hex length insufficient");
-// SPDX-License-Identifier: MIT
         return string(buffer);
     }
 }
 
+// SPDX-License-Identifier: MIT
 /**
  * @dev Implementation of the {IERC165} interface.
  *
@@ -520,11 +520,11 @@ abstract contract ERC165 is IERC165 {
      * @dev See {IERC165-supportsInterface}.
      */
     function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
-// SPDX-License-Identifier: MIT
         return interfaceId == type(IERC165).interfaceId;
     }
 }
 
+// SPDX-License-Identifier: MIT
 /**
  * @dev Implementation of https://eips.ethereum.org/EIPS/eip-721[ERC721] Non-Fungible Token Standard, including
  * the Metadata extension, but not including the Enumerable extension, which is available separately as
@@ -921,11 +921,11 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     function _beforeTokenTransfer(
         address from,
         address to,
-// SPDX-License-Identifier: MIT
         uint256 tokenId
     ) internal virtual {}
 }
 
+// SPDX-License-Identifier: MIT
 /**
  * @dev ERC721 token with storage based token URI management.
  */
@@ -983,11 +983,11 @@ abstract contract ERC721URIStorage is ERC721 {
 
         if (bytes(_tokenURIs[tokenId]).length != 0) {
             delete _tokenURIs[tokenId];
-// SPDX-License-Identifier: MIT
         }
     }
 }
 
+// SPDX-License-Identifier: MIT
 /**
  * @title ERC721 Burnable Token
  * @dev ERC721 Token that can be irreversibly burned (destroyed).
@@ -1003,11 +1003,11 @@ abstract contract ERC721Burnable is Context, ERC721 {
     function burn(uint256 tokenId) public virtual {
         //solhint-disable-next-line max-line-length
         require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721Burnable: caller is not owner nor approved");
-// SPDX-License-Identifier: MIT
         _burn(tokenId);
     }
 }
 
+// SPDX-License-Identifier: MIT
 /**
  * @dev Contract module which provides a basic access control mechanism, where
  * there is an account (an owner) that can be granted exclusive access to
@@ -1070,11 +1070,11 @@ abstract contract Ownable is Context {
     function _setOwner(address newOwner) private {
         address oldOwner = _owner;
         _owner = newOwner;
-// SPDX-License-Identifier: MIT
         emit OwnershipTransferred(oldOwner, newOwner);
     }
 }
 
+// SPDX-License-Identifier: MIT
 /**
  * @title Counters
  * @author Matt Condon (@shrugs)
@@ -1110,11 +1110,11 @@ library Counters {
     }
 
     function reset(Counter storage counter) internal {
-// SPDX-License-Identifier: MIT
         counter._value = 0;
     }
 }
 
+// SPDX-License-Identifier: MIT
 /**
  * @title BreadHeads
  * BreadHeads - Base smart contract for ERC721 on Ethereum

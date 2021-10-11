@@ -4,6 +4,7 @@ require('dotenv').config()
 const NFT_CONTRACT_ABI = require('../abi.json')
 const argv = require('minimist')(process.argv.slice(2));
 const fs = require('fs')
+const axios = require('axios')
 
 async function main() {
     try {
@@ -17,16 +18,7 @@ async function main() {
             NFT_CONTRACT_ABI,
             configs.contract_address, { gasLimit: "10000000" }
         );
-        console.log('CONTRACT ADDRESS IS:', configs.contract_address)
-        const owner = await nftContract.methods.owner().call();
-        console.log('OWNER IS:', owner)
-        const name = await nftContract.methods.name().call();
-        const symbol = await nftContract.methods.symbol().call();
-        const balance = await nftContract.methods.getBalance().call();
-        console.log('BALANCE IS:', balance)
-        console.log('|* NFT DETAILS *|')
-        console.log('>', name, symbol, '<');
-        console.log('--')
+
         let ended = false
         let i = 1;
         try {
@@ -34,12 +26,21 @@ async function main() {
                 const owner = await nftContract.methods.ownerOf(i).call();
                 const uri = await nftContract.methods.tokenURI(i).call();
                 console.log('TOKENID: ' + i + ' - ' + uri, 'OWNER IS', owner)
+                console.log('ASKING METADATA...')
+                const details = await axios.get(uri)
+                console.log('TITLE IS: ' + details.data.name)
+                if(details.data.name.indexOf('#' + i.toString().padStart(3, "0")) === -1){
+                    console.log("!!!!!! ALERT !!!!!!! WRONG METADATA AT ID " + i)
+                }
+                if(details.data.attributes === undefined){
+                    console.log("!!!!!! ALERT !!!!!!! TRAITS NOT FOUND")
+                }
                 i++
             }
         } catch (e) {
             ended = true
+            console.log(e)
         }
-        process.exit();
     } catch (e) {
         console.log(e.message)
         process.exit();
